@@ -7,37 +7,37 @@ const {
 }=require("../controller/blogController")
 const {SucceedModel}=require("../model/responseModel")
 
-module.exports=(req,res,pathname)=>{
+module.exports=(req,res)=>{
+
+    const {method,pathname}=req
     
-    if(req.method==="GET"&&pathname==="/list/all"){
+    if(method==="GET"&&pathname==="/blog/all"){
         const result=getAllList()
         return new SucceedModel(result,"succeed")
     }
 
-    if(req.method==="POST"&&pathname==="/list/update"){
+    if(method==="POST"&&pathname==="/blog/update"){
         const result=updateList(req.body)
         return new SucceedModel(result)
     }
 
 
-    if(req.method==="POST"&&pathname==="/list/add"){
+    if(method==="POST"&&pathname==="/blog/add"){
         const result=addList(req.body)
         return new SucceedModel(result)
     }
 
-    if(req.method==="POST"&&pathname==="/list/delete"){
+    if(method==="POST"&&pathname==="/blog/delete"){
         const result=deleteList(req.query.id)
         return new SucceedModel(result)
     }
 
     
-    if(req.method==="GET"&&pathname==="/list/detail"){
+    if(method==="GET"&&pathname==="/blog/detail"){
         const result=getListDetail(req.query.id,"succeed")
         return new SucceedModel(result)
     }
 
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end("not fount 😔")
-    return false
+   
     
 }
