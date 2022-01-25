@@ -15,10 +15,8 @@ const getRequestBody= (req)=>{
             reject(err)
         })
         req.on("end",()=>{
-            if(!data){
-                resolve({}) 
-            }
-             resolve(data)
+            let result=data||JSON.stringify({})
+            resolve(JSON.parse(result))
         })
     })
    
@@ -40,7 +38,6 @@ const handler=async (req,res)=>{
        return res.end(JSON.stringify(list))
     }
   
-    res.end()
 
 }
 

@@ -11,6 +11,32 @@ const getAllList=()=>{
     }]
 }
 
+const updateList=(payload)=>{
+    return payload.id+"update succeed"
+}
+
+const addList=(payload)=>{
+    return payload.title+"add succeed"
+}
+
+const deleteList=(id)=>{
+    return id+"deleteList succeed"
+}
+
+const getListDetail=(id)=>{
+    console.log("getListDetail",id);
+    return [ {
+        id:1,
+        title:"111",
+        createTime:"2020-20-20"
+    }]
+}
+
+
 module.exports={
-    getAllList
+    getAllList,
+    updateList,
+    addList,
+    deleteList,
+    getListDetail
 }
