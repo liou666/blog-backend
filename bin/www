@@ -10,3 +10,19 @@ const serve=http.createServer(handler)
 serve.listen(PORT,()=>{
     console.log("serve is running "+PORT);
 })
+
+
+process.on('SIGINT', function () {
+    console.error('Server stopped.')
+    process.exit();
+});
+
+process.on('SIGTERM', function () {
+    console.error('Server stopped.')
+    process.exit();
+});
+
+
+process.on("unhandledRejection", (reason) => {
+    console.error(`unhandledRejection ${reason}`)
+})
