@@ -1,0 +1,12 @@
+#!bin/env node
+const http=require("http");
+
+const handler =require("../app")
+
+const PORT=3000
+
+const serve=http.createServer(handler)
+
+serve.listen(PORT,()=>{
+    console.log("serve is running "+PORT);
+})
