@@ -14,10 +14,7 @@ const getAllList = async ({ title, author }) => {
 const updateList = async ({ id, blogData = {} }) => {
     const { title, content } = blogData
     let sql = `UPDATE blogs set title="${title}",content="${content}" where id=${id}`
-    const result = await exec(sql)
-    if (result?.affectedRows) {
-        return '更新成功'
-    }
+    return await exec(sql)
 }
 
 const addList = async ({ title, author, content }) => {
@@ -26,18 +23,12 @@ const addList = async ({ title, author, content }) => {
                (title,content,create_time,author) 
                values 
                ('${title}',"${content}","2021-3-4 10:00:00",'${author}')`
-    const result = await exec(sql)
-    if (result?.affectedRows) {
-        return '添加成功'
-    }
+    return await exec(sql)
 }
 
 const deleteList = async (id, author) => {
     const sql = `DELETE FROM blogs where id = ${id} and author = "${author}"`
-    const result = await exec(sql)
-    if (result?.affectedRows) {
-        return '删除成功'
-    }
+    return await exec(sql)
 }
 
 const getListDetail = async (id) => {
