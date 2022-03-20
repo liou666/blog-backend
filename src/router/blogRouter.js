@@ -8,11 +8,21 @@ const {
 const { SucceedModel, ErrorModel } = require("../model/responseModel")
 
 
+const { get, set } = require("../db/redis")
+
+const checkLogin = (req) => {
+    if (!req.session?.username) {
+        return new ErrorModel("未登录")
+    }
+}
 
 module.exports = async (req, res) => {
 
     const { method, pathname } = req
-
+    // if (!checkLogin(req)) {
+    //     console.log(123);
+    //     return checkLogin(req)
+  
     if (method === "GET" && pathname === "/blog/list") {
         try {
             const result = await getAllList(req.query)

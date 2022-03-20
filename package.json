@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mysql2": "^2.3.3"
+    "cookie": "^0.4.2",
+    "mysql2": "^2.3.3",
+    "redis": "^4.0.4"
   }
 }

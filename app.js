@@ -1,9 +1,16 @@
 'use strict'
 
+const cookie = require('cookie');
+
+const { get, set } = require("./src/db/redis")
+
 const { URL } = require("url")
+
+
 
 const blogRouter = require("./src/router/blogRouter")
 const userRouter = require("./src/router/userRouter")
+
 
 
 const getRequestBody = (req) => {
@@ -25,23 +32,51 @@ const getRequestBody = (req) => {
 
 const handler = async (req, res) => {
     res.setHeader("Content-Type", 'application/json')
-
     const { searchParams, pathname } = new URL(req.url, "http://" + req.headers.host);
     console.log(req.method, pathname);
 
+    req.cookie = cookie.parse(req.headers.cookie || '');
     req.query = Object.fromEntries(searchParams)
     req.pathname = pathname
     req.body = await getRequestBody(req)
 
 
+    let userId = req.cookie.userId
+    let needSetCookie = false
+    if (!userId) {
+        needSetCookie = true
+        userId = +new Date();
+        await set(userId, {})
+    }
+
+    req.sessionId = userId
+
+    const sessionData = await get(req.sessionId)
+    req.session = sessionData
+
+    console.log(sessionData);
+
     const blog = await blogRouter(req, res)
     if (blog) {
+        if (needSetCookie) {
+            res.setHeader('Set-Cookie', cookie.serialize('userId', String(userId), {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24 * 7, // 1 week
+                path: "/"
+            }));
+        }
         return res.end(JSON.stringify(blog))
     }
 
     const user = await userRouter(req, res)
-    console.log(user);
     if (user) {
+        if (needSetCookie) {
+            res.setHeader('Set-Cookie', cookie.serialize('userId', String(userId), {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24 * 7, // 1 week
+                path: "/"
+            }));
+        }
         return res.end(JSON.stringify(user))
     }
 
